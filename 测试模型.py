@@ -16,7 +16,7 @@ def readstopwords(stopwords_path):
             stop_single_words.append(content)
     return stop_single_words
 
-stopwords_path='F:/中国搜索项目数据/tycb_comment.txt'
+
 
 def sentense_cut(txt_path):
     with open(txt_path, 'r+', encoding='utf-8') as lines:
@@ -53,17 +53,22 @@ def read(file_name):
         data=pickle.load(fr)
     return  data
 
-txt_path='F:/央广财经新闻18.txt'
-word2index=read('分词ID词典(多分类)')
-MAX_SENTENCE_LENGTH=read('样本平均长度(多分类)')
+
+stopwords_path='G:/Youth_recommendation-master/哈工大停用词表.txt'
+txt_path='G:/Youth_recommendation-master/test.txt'
+word2index=read('分词ID词典(多分类1w)')
+MAX_SENTENCE_LENGTH=read('样本平均长度(多分类1w)')
 maxID=len(word2index)+1
-print(MAX_SENTENCE_LENGTH)
+#print(MAX_SENTENCE_LENGTH)
 # print(word2digital(txt_path,word2index,MAX_SENTENCE_LENGTH))
 
 # 读取model
-model=model_from_json(open('my_model_architecture.json').read())
+model=model_from_json(open('my_model_architecture5k.json').read())
 model.load_weights('my_model_weights.h5')
 
 X=word2digital(txt_path,word2index,MAX_SENTENCE_LENGTH).reshape(1,MAX_SENTENCE_LENGTH)
 y_pred = model.predict(X)
-print(y_pred)
+print('Network prediction:', np.argmax([y_pred[0]]))
+
+topics_list=['财经','彩票','房产','股票','家居','社会','科技', '时政', '体育', '游戏', '娱乐', '时尚']
+print('该文章属于%s类'% (topics_list[np.argmax([y_pred[0]])]))
