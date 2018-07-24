@@ -6,7 +6,7 @@
 
 
 #### 1.数据处理
-imput: 6w样本(模拟用户定义了6类感兴趣话题和6类不感兴趣话题)  
+input: 6w样本(模拟用户定义了6类感兴趣话题和6类不感兴趣话题)  
 output:X、Y向量、分词词典、样本平均长度  
 (1)输入的数据是12类，每类各5k条文章样本，共计6w个样本；  
 (2)对每个样本进行分词(结巴分词加搜狗数据库)，去停用词(导入停用词表)，建立所有样本的分词词典，根据词典得到每个样本每个词的ID，每个样本表示成由ID组成的向量X；  
@@ -20,9 +20,21 @@ output:双向LSTM molel
 (2)modle结构：embedding层+LSTM层+dense层+softmax层  
 (3)用keras搭建整个模型；
 ### 3.模型预测
-imput:一篇文章、保存的模型
+input：一篇文章、保存的模型（my_model_architecture5k.json）、保存的数据模型参数（my_model_weights.h5）
 output：文章类别的分布函数/文章的类别
 (1)导入的保存的模型
 (2)对输入的样本，分词，去停用词，向量化，得到其对应的X;
 (3)导入保存的模型，将X输入模型中，得到样本 的话题概率分布，选择最大的概率作为类；
+
+
+
+#### 4.数据
+
+链接: https://pan.baidu.com/s/1Y_OYiQIQXbcpVvlu9F_jCw 密码: unkz
+
+#### 5.运行：
+
+1.将分词ID词典(多分类5k).txt、哈工大停用词表.txt、样本平均长度(多分类5k).txt、my_model_architecture5k.json、my_model_weights.h5、测试模型.py下载放入同一个文件夹；
+
+2.更改txt文件路径、停用词表路径，运行即可。
 

@@ -1,5 +1,5 @@
 import os
-os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
+import keras
 from keras.utils import np_utils
 from keras.models import Sequential #序贯模型,用来一层一层一层的去建立神经层
 from keras.layers import Dense, Activation,Embedding,LSTM,Bidirectional#全连接层和激活层
@@ -12,16 +12,18 @@ import pickle
 from keras.callbacks import EarlyStopping
 import h5py
 from keras.models import model_from_json
+import matplotlib.pyplot as plt
+
 
 def read(file_name):
     with open(str(file_name)+'.txt', 'rb') as fr:
         data=pickle.load(fr)
     return  data
 
-X=read('X_特征向量(多分类)')
-Y=read('Y_结果向量(多分类)')
-word2index=read('分词ID词典(多分类)')
-MAX_SENTENCE_LENGTH=read('样本平均长度(多分类)')
+X=read('X_特征向量(多分类1w)')
+Y=read('Y_结果向量(多分类1w)')
+word2index=read('分词ID词典(多分类1w)')
+MAX_SENTENCE_LENGTH=read('样本平均长度(多分类1w)')
 maxID=len(word2index)+1
 
 
@@ -33,14 +35,13 @@ def model(X,Y,MAX_SENTENCE_LENGTH,vocab_size):
 
     EMBEDDING_SIZE = 200
     HIDDEN_LAYER_SIZE = 48
-    BATCH_SIZE = 300
-    NUM_EPOCHS = 10
+    BATCH_SIZE = 500
+    NUM_EPOCHS = 8
     for i in range(NUM_EPOCHS):
         epochs_list.append(i + 1)
     model = Sequential()
     model.add(Embedding(vocab_size, EMBEDDING_SIZE, input_length=MAX_SENTENCE_LENGTH))
-    #model.add(Bidirectional(LSTM(HIDDEN_LAYER_SIZE, dropout=0.3, recurrent_dropout=0.3, kernel_regularizer=regularizers.l2(0.001),  recurrent_regularizer=regularizers.l2(0.001), bias_regularizer=regularizers.l2(0.001))))
-    model.add(Bidirectional(LSTM(HIDDEN_LAYER_SIZE, dropout=0.2, recurrent_dropout=0.2)))
+    model.add(Bidirectional(LSTM(HIDDEN_LAYER_SIZE, dropout=0.3, recurrent_dropout=0.3)))
     model.add(Dense(12))
     model.add(Activation("softmax"))
     model.compile(loss="categorical_crossentropy", optimizer="adam", metrics=["accuracy"])
@@ -49,7 +50,7 @@ def model(X,Y,MAX_SENTENCE_LENGTH,vocab_size):
     return score, acc, epochs_list, history, model, X_test, Y_test
 
 
-import matplotlib.pyplot as plt
+
 
 
 def draw(epochs_list, history):
@@ -87,17 +88,14 @@ EarlyStopping=EarlyStopping(monitor='val_loss', patience=0, verbose=0, mode='aut
 score, acc,epochs_list,history,model,Xtest,ytest=model(X,Y,MAX_SENTENCE_LENGTH,maxID)
 
 model.save('my_model.h5')   # HDF5 file, you have to pip3 install h5py if don't have it
-json_string = model.to_json() #等价于 json_string = model.get_config()
-open('my_model_architecture.json','w').write(json_string)
+json_string = model.to_json()
+with open('my_model_architecture5k.json','w') as f:
+    f.write(json_string)
 model.save_weights('my_model_weights.h5')
 
 print("\nTest score: %.3f, accuracy: %.3f" % (score, acc))
 draw(epochs_list, history)
-#
-json_string = model.to_json()
-with open('my_model_architecture.json','w') as f:
-    f.write(json_string)
-model.save_weights('my_model_weights.h5')
+
 
 
 

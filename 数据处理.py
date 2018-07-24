@@ -81,12 +81,6 @@ def word2digital(data_paths):
     X = np.empty(num_recs, dtype=list)
     Y = np.zeros(num_recs)
     for txtpath in txtpaths:
-        # for path_item in positive_paths:
-        #     if path_item in txtpath:
-        #         Y[txtpaths.index(txtpath)] = 1
-        # for path_item in negative_paths:
-        #     if path_item in txtpath:
-        #         Y[txtpaths.index(txtpath)] = 0
         for path in data_paths:
             if path in txtpath:
                 Y[txtpaths.index(txtpath)] = data_paths.index(path)
@@ -114,17 +108,11 @@ def write_to_file(content,file_name):
 
 
 stopwords_path='/home/amhu/文档/tycb_comment.txt'
-#data_paths=['F:/中国搜索项目数据/数据/科普文章','F:/中国搜索项目数据/数据/央广财经新闻','F:/中国搜索项目数据/数据/央广产经新闻','F:/中国搜索项目数据/数据/央广军事','F:/中国搜索项目数据/数据/央广要点新闻']
-#data_paths=['F:/中国搜索项目数据/testdata/test1','F:/中国搜索项目数据/testdata/test2','F:/中国搜索项目数据/testdata/test3']
-# negative_paths=['/home/amhu/文档/多分类数据/财经','/home/amhu/文档/多分类数据/彩票','/home/amhu/文档/多分类数据/房产','/home/amhu/文档/多分类数据/股票','/home/amhu/文档/多分类数据/家居','/home/amhu/文档/多分类数据/社会']
-# positive_paths=['/home/amhu/文档/多分类数据/科技','/home/amhu/文档/多分类数据/时政','/home/amhu/文档/多分类数据/体育','/home/amhu/文档/多分类数据/游戏','/home/amhu/文档/多分类数据/娱乐','/home/amhu/文档/多分类数据/时尚']
-# data_paths=negative_paths
-# data_paths.extend(positive_paths)
+
 
 data_paths=['/home/amhu/文档/多分类数据/财经','/home/amhu/文档/多分类数据/彩票','/home/amhu/文档/多分类数据/房产','/home/amhu/文档/多分类数据/股票','/home/amhu/文档/多分类数据/家居','/home/amhu/文档/多分类数据/社会', \
             '/home/amhu/文档/多分类数据/科技', '/home/amhu/文档/多分类数据/时政', '/home/amhu/文档/多分类数据/体育', '/home/amhu/文档/多分类数据/游戏',\
             '/home/amhu/文档/多分类数据/娱乐', '/home/amhu/文档/多分类数据/时尚']
-
 
 X, Y,word2index,MAX_SENTENCE_LENGTH=word2digital(data_paths)
 write_to_file(X,'X_特征向量(多分类)')
