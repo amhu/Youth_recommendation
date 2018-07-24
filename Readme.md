@@ -30,3 +30,4 @@ output：文章类别的分布函数/文章的类别
 1.同一个文件下放文件：模型预测.py / my_model_weights.h5  / my_model_architecture.json
 2.模型预测中更改txtpath/stopwords_path（停用词典的路径）
 3.运行即可
+4、数据：链接: https://pan.baidu.com/s/1zZLK13ZkbIAYl-irQhzSLA 密码: uj5p
